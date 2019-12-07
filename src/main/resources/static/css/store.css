@@ -1,0 +1,10 @@
+.login-form {
+    width: 25%;
+    top: 25%;
+    left: 38%;
+    position: absolute;
+}
+
+.logout {
+    margin-right: 0px;
+}
