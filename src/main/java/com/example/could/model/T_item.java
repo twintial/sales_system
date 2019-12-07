@@ -1,8 +1,10 @@
 package com.example.could.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class T_item {
     private int item_id;
     private int store_id;

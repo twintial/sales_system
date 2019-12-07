@@ -45,12 +45,13 @@ public class HiveJdbcTemplateController {
         try {
             // hiveJdbcTemplate.execute(sql.toString());
             hiveDruidTemplate.execute(sql.toString());
+
         } catch (DataAccessException dae) {
             result = "Create table encounter an error: " + dae.getMessage();
             logger.error(result);
         }
         model.addAttribute("result", result);
-        return "test";
+        return result;
 
     }
 }

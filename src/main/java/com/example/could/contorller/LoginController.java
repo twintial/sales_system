@@ -34,7 +34,6 @@ public class LoginController {
     public String storeLoginCheck(@RequestParam("account") String account,
                                   @RequestParam("psw") String psw, HttpSession session){
         if (loginService.StoreLoginCheck(account, psw, session)){
-
             return "redirect:/home/store";
         }else {
             return "redirect:/store";

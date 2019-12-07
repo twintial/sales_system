@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>商店主页</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/store.css">
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#" th:text="${account}"></a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home/store">商品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/log/store">销售记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">logout</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/log/store/all">
+                    <input class="form-control mr-sm-2" type="search" name="itemName" placeholder="输入商品名" aria-label="Search" th:value="${searchName}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </div>
+        </nav>
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <span th:text="共有 + ${logAmount} + 条销售记录"></span>
+                </div>
+            </div>
+            <div class="container">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th scope="col">商品名称</th>
+                            <th scope="col">购买用户</th>
+                            <th scope="col">用户年龄</th>
+                            <th scope="col">购买时间</th>
+                            <th scope="col">购买数量</th>
+                            <th scope="col">单价</th>
+                            <th scope="col">总价</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="log:${logList}">
+                            <th th:text="${log.item_name}" scope="row"></th>
+                            <td th:text="${log.real_name}"></td>
+                            <td th:text="${log.age}"></td>
+                            <td th:text="${log.purchase_time}"></td>
+                            <td th:text="${log.purchase_volume}"></td>
+                            <td th:text="${log.unit_price}"></td>
+                            <td th:text="${log.total_price}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -10,6 +10,8 @@ public class LoginService {
         // 改成从数据库中查询
         if (account.equals("550847434@qq.com") && psw.equals("abcd1234")){
             session.setAttribute("account", account);
+            // 改成查询出的id
+            session.setAttribute("id", "123");
             return true;
         } else {
             return false;
