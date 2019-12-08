@@ -25,6 +25,16 @@ public class LoginController {
     public String userLogin(){
         return "forward:/user_login.html";
     }
+    @PostMapping("/user/check")
+    public String UserLoginCheck(@RequestParam("account") String account,
+                                  @RequestParam("psw") String psw, HttpSession session){
+        if (loginService.UserLoginCheck(account, psw, session)){
+
+            return "redirect:/home/user";
+        }else {
+            return "redirect:/user";
+        }
+    }
 
     @GetMapping("/store")
     public String storeLogin(){

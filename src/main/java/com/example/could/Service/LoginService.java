@@ -15,4 +15,13 @@ public class LoginService {
             return false;
         }
     }
+    public boolean UserLoginCheck(String account, String psw, HttpSession session){
+        // 改成从数据库中查询
+        if (account.equals("1@q.q") && psw.equals("1")){
+            session.setAttribute("account", account);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

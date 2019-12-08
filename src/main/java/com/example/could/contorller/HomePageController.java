@@ -28,4 +28,13 @@ public class HomePageController {
         model.addAttribute("itemList", itemList);
         return "store_homepage";
     }
+
+    @GetMapping("/user")
+    public String enterUserHomePage(Model model, HttpSession session){
+        log.info(session.getAttribute("account").toString());
+        List<T_item> itemList = goodsService.getGood(null);
+        model.addAttribute("account", session.getAttribute("account").toString());
+        model.addAttribute("itemList", itemList);
+        return "user_homepage";
+    }
 }
