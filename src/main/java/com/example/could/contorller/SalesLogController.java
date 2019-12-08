@@ -22,10 +22,10 @@ public class SalesLogController {
     SalesLogService salesLogService;
     @GetMapping("/store")
     public String enterLogPage(Model model, HttpSession session){
-        String account = session.getAttribute("account").toString();
+        String name = session.getAttribute("store_name").toString();
         List<SalesLogViewModel> salesLogs = salesLogService.getSalesLog(Integer.parseInt(session.getAttribute("id").toString()));
         int logAmount = salesLogs.size();
-        model.addAttribute("account", account);
+        model.addAttribute("store_name", name);
         model.addAttribute("logList", salesLogs);
         model.addAttribute("logAmount", logAmount);
         return "store_logpage";
@@ -34,10 +34,10 @@ public class SalesLogController {
     @GetMapping("/store/all")
     public String searchGoods(String itemName, Model model, HttpSession session){
         log.info("搜索了" + itemName);
-        String account = session.getAttribute("account").toString();
+        String name = session.getAttribute("store_name").toString();
         List<SalesLogViewModel> salesLogs = salesLogService.searchSalesLog(Integer.parseInt(session.getAttribute("id").toString()), itemName);
         int logAmount = salesLogs.size();
-        model.addAttribute("account", account);
+        model.addAttribute("store_name", name);
         model.addAttribute("logList", salesLogs);
         model.addAttribute("logAmount", logAmount);
         model.addAttribute("searchName", itemName);

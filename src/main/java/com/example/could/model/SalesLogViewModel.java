@@ -2,18 +2,20 @@ package com.example.could.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SalesLogViewModel {
     String item_name;
     String real_name;
-    int age;
+    Integer age;
     Date purchase_time;
-    int purchase_volume;
-    float unit_price;
-    float total_price;
+    Integer purchase_volume;
+    Float unit_price;
+    Float total_price;
 
 }

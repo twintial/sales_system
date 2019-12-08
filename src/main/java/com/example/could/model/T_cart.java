@@ -1,10 +1,14 @@
 package com.example.could.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class T_cart {
-    private int user_id;
+    private Integer user_id;
     // 这个不知道用什么类型好
-    private int item_id;
+    private Integer item_id;
 }

@@ -24,10 +24,10 @@ public class HomePageController {
     // 进入主页(商品页面)
     @GetMapping("/store")
     public String enterStoreHomePage(Model model, HttpSession session){
-        String account = session.getAttribute("account").toString();
+        String name = session.getAttribute("store_name").toString();
         List<T_item> itemList = goodsService.getGoods(Integer.parseInt(session.getAttribute("id").toString()));
         int itemAmount = itemList.size();
-        model.addAttribute("account", account);
+        model.addAttribute("store_name", name);
         model.addAttribute("itemAmount", itemAmount);
         model.addAttribute("itemList", itemList);
         return "store_homepage";
@@ -36,10 +36,10 @@ public class HomePageController {
     @GetMapping("/store/all")
     public String searchGoods(String itemName, Model model, HttpSession session){
         log.info("搜索了" + itemName);
-        String account = session.getAttribute("account").toString();
+        String name = session.getAttribute("store_name").toString();
         List<T_item> itemList = goodsService.searchGoods(Integer.parseInt(session.getAttribute("id").toString()), itemName);
         int itemAmount = itemList.size();
-        model.addAttribute("account", account);
+        model.addAttribute("store_name", name);
         model.addAttribute("itemAmount", itemAmount);
         model.addAttribute("itemList", itemList);
         model.addAttribute("searchName", itemName);
