@@ -32,7 +32,7 @@ public class SalesLogController {
     }
 
     @GetMapping("/store/all")
-    public String searchGoods(String itemName, Model model, HttpSession session){
+    public String searchLogs(String itemName, Model model, HttpSession session){
         log.info("搜索了" + itemName);
         String name = session.getAttribute("store_name").toString();
         List<SalesLogViewModel> salesLogs = salesLogService.searchSalesLog(Integer.parseInt(session.getAttribute("id").toString()), itemName);
@@ -42,5 +42,29 @@ public class SalesLogController {
         model.addAttribute("logAmount", logAmount);
         model.addAttribute("searchName", itemName);
         return "store_logpage";
+    }
+
+    @GetMapping("/admin")
+    public String enterAdminLogPage(Model model, HttpSession session){
+        String account = session.getAttribute("account").toString();
+        List<SalesLogViewModel> salesLogs = salesLogService.getSalesLog(null);
+        int logAmount = salesLogs.size();
+        model.addAttribute("account", account);
+        model.addAttribute("logList", salesLogs);
+        model.addAttribute("logAmount", logAmount);
+        return "admin_logpage";
+    }
+
+    @GetMapping("/admin/all")
+    public String searchInAllLogs(String itemName, Model model, HttpSession session){
+        log.info("搜索了" + itemName);
+        String account = session.getAttribute("account").toString();
+        List<SalesLogViewModel> salesLogs = salesLogService.searchSalesLog(null, itemName);
+        int logAmount = salesLogs.size();
+        model.addAttribute("account", account);
+        model.addAttribute("logList", salesLogs);
+        model.addAttribute("logAmount", logAmount);
+        model.addAttribute("searchName", itemName);
+        return "admin_logpage";
     }
 }

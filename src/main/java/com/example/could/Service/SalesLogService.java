@@ -24,14 +24,14 @@ public class SalesLogService {
             StringBuffer sql = new StringBuffer(
                     "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
                     "from t_user natural join t_item natural join t_sales_log " +
-                    "where store_id = ?");
+                    "where store_id = ? order by purchase_time desc");
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
                     new BeanPropertyRowMapper<>(SalesLogViewModel.class), storeID);
             return salesLogList;
         }else {
             StringBuffer sql = new StringBuffer(
                     "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
-                            "from t_user natural join t_item natural join t_sales_log");
+                            "from t_user natural join t_item natural join t_sales_log order by purchase_time desc");
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
                     new BeanPropertyRowMapper<>(SalesLogViewModel.class));
             return salesLogList;
@@ -43,7 +43,7 @@ public class SalesLogService {
             StringBuffer sql = new StringBuffer(
                     "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
                             "from t_user natural join t_item natural join t_sales_log " +
-                            "where store_id = ? and item_name like ?");
+                            "where store_id = ? and item_name like ? order by purchase_time desc");
             Object[] params = {storeID, "%" + name + "%"};
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
                     new BeanPropertyRowMapper<>(SalesLogViewModel.class), params);
@@ -52,7 +52,7 @@ public class SalesLogService {
             StringBuffer sql = new StringBuffer(
                     "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
                             "from t_user natural join t_item natural join t_sales_log " +
-                            "where item_name like ?");
+                            "where item_name like ? order by purchase_time desc");
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
                     new BeanPropertyRowMapper<>(SalesLogViewModel.class), "%" + name + "%");
             return salesLogList;

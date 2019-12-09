@@ -33,7 +33,7 @@ public class LoginController {
     @PostMapping("/store/check")
     public String storeLoginCheck(@RequestParam("account") String account,
                                   @RequestParam("psw") String psw, HttpSession session){
-        if (loginService.StoreLoginCheck(account, psw, session)){
+        if (loginService.storeLoginCheck(account, psw, session)){
             return "redirect:/home/store";
         }else {
             return "redirect:/store";
@@ -43,5 +43,14 @@ public class LoginController {
     @GetMapping("/admin")
     public String adminLogin(){
         return "forward:/admin_login.html";
+    }
+    @PostMapping("/admin/check")
+    public String adminLoginCheck(@RequestParam("account") String account,
+                                  @RequestParam("psw") String psw, HttpSession session){
+        if (loginService.adminLoginCheck(account, psw, session)){
+            return "redirect:/home/admin";
+        }else {
+            return "redirect:/admin";
+        }
     }
 }

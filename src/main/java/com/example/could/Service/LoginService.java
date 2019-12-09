@@ -1,5 +1,6 @@
 package com.example.could.Service;
 
+import com.example.could.model.T_admin;
 import com.example.could.model.T_store;
 import com.example.could.model.T_user;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class LoginService {
     @Qualifier("hiveDruidTemplate")
     private JdbcTemplate hiveDruidTemplate;
 
-    public boolean StoreLoginCheck(String account, String psw, HttpSession session){
+    public boolean storeLoginCheck(String account, String psw, HttpSession session){
         StringBuffer sql = new StringBuffer("select store_id, store_password, store_name from t_store where store_account = ?");
         T_store store = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_store.class), account);
         if (store == null){
@@ -29,6 +30,20 @@ public class LoginService {
             session.setAttribute("store_name", store.getStore_name());
             // 改成查询出的id
             session.setAttribute("id", store.getStore_id());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean adminLoginCheck(String account, String psw, HttpSession session){
+        StringBuffer sql = new StringBuffer("select admin_password from t_admin where admin_account = ?");
+        T_admin admin = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_admin.class), account);
+        if (admin == null){
+            return false;
+        }
+        if (psw.equals(admin.getAdmin_password())){
+            session.setAttribute("account", account);
             return true;
         } else {
             return false;
