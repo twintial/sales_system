@@ -29,6 +29,8 @@ public class HomePageController {
         return "store_homepage";
     }
 
+
+
     @GetMapping("/user")
     public String enterUserHomePage(Model model, HttpSession session){
         log.info(session.getAttribute("account").toString());

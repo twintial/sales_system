@@ -22,7 +22,7 @@
                 <a class="nav-link" href="/home/user">继续挑选</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">logout</a>
+                <a class="nav-link" href="/logout">logout</a>
             </li>
         </ul>
 
@@ -31,7 +31,7 @@
 
 <div class="card">
     <div class="card-body">
-        <span>目前总价：</span>
+        <span>购物清单：</span>
         <button type="button" class="btn btn-primary" style="float: right">立即购买</button>
     </div>
 </div>
@@ -42,7 +42,7 @@
         <th scope="col">商品名称</th>
         <th scope="col">价格</th>
         <th scope="col">
-
+            数量
         </th>
     </tr>
     </thead>
@@ -50,6 +50,13 @@
     <tr th:each="item:${itemList}">
         <th th:text="${item.item_name}" scope="row"></th>
         <td th:text="${item.unit_price}"></td>
+        <td>
+            <form>
+                <div class="input-group mb-3 input-group-sm" style="width:6%" >
+                    <input type="text" class="form-control" placeholder="1">
+                </div>
+            </form>
+        </td>
         <td>
             <button type="button" class="btn btn-primary" style="float: right">删除</button>
         </td>
