@@ -9,9 +9,13 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class T_sales_log {
-    private Integer item_id;
-    private Integer user_id;
-    private Date purchase_time;
-    private Integer purchase_volume;
+public class SalesLogViewModel {
+    String item_name;
+    String real_name;
+    Integer age;
+    Date purchase_time;
+    Integer purchase_volume;
+    Float unit_price;
+    Float total_price;
+
 }

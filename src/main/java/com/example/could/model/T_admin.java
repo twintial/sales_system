@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class T_cart {
-    private Integer item_id;
-    private Integer user_id;
-    private Integer cart_id;
+public class T_admin {
+    private String admin_account;
+    private String admin_password;
 }

@@ -1,5 +1,6 @@
 package com.example.could.contorller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.ResultSet;
+import java.util.List;
 
 /**
  * 使用 JdbcTemplate 操作 Hive
  */
+@Slf4j
 @Controller
 @RequestMapping("/hive2")
 public class HiveJdbcTemplateController {
@@ -32,6 +38,7 @@ public class HiveJdbcTemplateController {
     /**
      * 示例：创建新表
      */
+    @ResponseBody
     @GetMapping("/table/create")
     public String createTable(Model model) {
         StringBuffer sql = new StringBuffer("CREATE TABLE IF NOT EXISTS ");
@@ -45,12 +52,24 @@ public class HiveJdbcTemplateController {
         try {
             // hiveJdbcTemplate.execute(sql.toString());
             hiveDruidTemplate.execute(sql.toString());
+
         } catch (DataAccessException dae) {
             result = "Create table encounter an error: " + dae.getMessage();
             logger.error(result);
         }
         model.addAttribute("result", result);
-        return "test";
+        return result;
 
+    }
+
+    @ResponseBody
+    @GetMapping("test")
+    public int test(){
+        String sql = "select count(*) from test";
+        log.info(sql);
+        Integer count = hiveDruidTemplate.queryForObject(sql, Integer.class);
+        assert count != null;
+        log.info(count.toString());
+        return count;
     }
 }

@@ -1,63 +1,214 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>SpringBoot模版渲染</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/store.css">
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#" th:text="${account}"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <head>
+        <title>商店主页</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/store.css">
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#" th:text="${store_name}"></a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home/store">商品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/log/store">销售记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">logout</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/home/store/all">
+                    <input class="form-control mr-sm-2" type="search" name="itemName" placeholder="输入商品名" aria-label="Search" th:value="${searchName}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </div>
+        </nav>
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <span id="total" th:text="共有 + ${itemAmount} + 件商品"></span>
+                    <span><button class="btn btn-primary" data-toggle="modal" data-target="#add-item">增加商品</button></span>
+                </div>
+            </div>
+            <div class="container">
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">商品名称</th>
+                        <th scope="col">销售量</th>
+                        <th scope="col">进价</th>
+                        <th scope="col">单价</th>
+                        <th scope="col">库存</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${itemList}" th:id="${item.item_id}">
+                        <th th:text="${item.item_id}" scope="row"></th>
+                        <td th:text="${item.item_name}"></td>
+                        <td th:text="${item.sales}"></td>
+                        <td th:text="${item.cost_price}"></td>
+                        <td th:text="${item.unit_price}"></td>
+                        <td th:text="${item.stock}" th:id="'stock' + ${item.item_id}"></td>
+                        <td>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                操作
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#revise" th:data-stock="${item.stock}" th:data-id="${item.item_id}">更改库存</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:onclick="|deleteItem(${item.item_id})|" style="color: red">删除商品</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- edit stock Modal -->
+        <div class="modal fade" id="revise" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">修改库存数</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="stock-volume" class="col-form-label">库存数为：</label>
+                        <input type="number" class="form-control" id="stock-volume">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="reviseStock(this.id)">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- add items Modal -->
+        <div class="modal fade" id="add-item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">增加新商品</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="item-name" class="col-form-label">商品名为：</label>
+                        <input type="text" maxlength="10" class="form-control" id="item-name">
+                        <label for="cost-price" class="col-form-label">进价为：</label>
+                        <input type="number" class="form-control" id="cost-price">
+                        <label for="unit-price" class="col-form-label">单价为：</label>
+                        <input type="number" class="form-control" id="unit-price">
+                        <label for="item-stock" class="col-form-label">库存为：</label>
+                        <input type="number" class="form-control" id="item-stock">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="addItem()">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function () {
+            $('#revise').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var stock = button.data('stock') // Extract info from data-* attributes
+                var item_id = button.data("id")
+                var modal = $(this)
+                modal.find('.modal-body input').val(stock)
+                modal.find('.modal-footer .btn-primary').attr("id", item_id)
+            })
+        })
+        function isInt(str) {
+            try{
+                str = parseInt(str)
+            } catch (e) {
+                alert('请输入整数')
+                return false
+            }
+            if (str < 0 || isNaN(str)){
+                alert('请输入正整数')
+                return false
+            }
+            return str
+        }
+        function isFloat(str) {
+            try{
+                str = parseFloat(str)
+            } catch (e) {
+                alert('请输入数字')
+                return false
+            }
+            if (str < 0 || isNaN(str)){
+                alert('请输入正数')
+                return false
+            }
+            return str
+        }
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">我的购物车</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">logout</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+        function deleteItem(itemID) {
+            $.get("/home/goods/delete/" + itemID, function(data, status){
+                console.log(data)
+                // 在页面上同步删除
+                $('#'+itemID).remove();
+                // $('#total').text(parseInt($('#total').text()) - 1)
+            });
+        }
+        function reviseStock(itemID) {
+            var stock = $('#stock-volume').val()
+            if (!isInt(stock)){
+                return
+            }
+            stock = isInt(stock)
+            $.get("/home/stock/revise/" + itemID + '/' + stock, function(data, status){
+                console.log(data)
+            });
+            // 在页面上同步修改
+            $('#stock' + itemID).text(stock)
+            $('#revise').modal('hide')
+        }
+        function addItem() {
+            var item_name = $('#item-name').val();
+            var cost_price = $('#cost-price').val();
+            var unit_price = $('#unit-price').val();
+            var stock = $('#item-stock').val();
+            if (!isFloat(cost_price) || !isFloat(unit_price) || !isInt(stock)){
+                return
+            }
+            cost_price = isFloat(cost_price)
+            unit_price = isFloat(unit_price)
+            stock = isInt(stock)
+            $.ajax({
+                url:'/home/stock/add',
+                data:JSON.stringify({
+                    item_name: item_name,
+                    cost_price: cost_price,
+                    unit_price: unit_price,
+                    stock: stock
+                }),
+                contentType:"application/json",
+                datatype:"json",
+                type:"post",
+                success : function(result) {
+                    console.log(result)
+                }
+            })
+            $('#add-item').modal('hide')
 
-<div class="card">
-    <div class="card-body">
-        <span>推荐商品：</span>
-    </div>
-</div>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">商品名称</th>
-        <th scope="col">价格</th>
-        <th scope="col">
-
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item:${itemList}">
-        <th th:text="${item.item_name}" scope="row"></th>
-        <td th:text="${item.unit_price}"></td>
-        <td>
-            <button type="button" class="btn btn-primary" style="float: right">加入购物车</button>
-        </td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
-</body>
+        }
+    </script>
 </html>

@@ -21,20 +21,6 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/user")
-    public String userLogin(){
-        return "forward:/user_login.html";
-    }
-    @PostMapping("/user/check")
-    public String UserLoginCheck(@RequestParam("account") String account,
-                                  @RequestParam("psw") String psw, HttpSession session){
-        if (loginService.UserLoginCheck(account, psw, session)){
-
-            return "redirect:/home/user";
-        }else {
-            return "redirect:/user";
-        }
-    }
 
     @GetMapping("/store")
     public String storeLogin(){
@@ -43,16 +29,38 @@ public class LoginController {
     @PostMapping("/store/check")
     public String storeLoginCheck(@RequestParam("account") String account,
                                   @RequestParam("psw") String psw, HttpSession session){
-        if (loginService.StoreLoginCheck(account, psw, session)){
-
+        if (loginService.storeLoginCheck(account, psw, session)){
             return "redirect:/home/store";
         }else {
-            return "redirect:/store";
+            return "redirect:/login/store";
         }
     }
 
     @GetMapping("/admin")
     public String adminLogin(){
         return "forward:/admin_login.html";
+    }
+    @PostMapping("/admin/check")
+    public String adminLoginCheck(@RequestParam("account") String account,
+                                  @RequestParam("psw") String psw, HttpSession session){
+        if (loginService.adminLoginCheck(account, psw, session)){
+            return "redirect:/home/admin";
+        }else {
+            return "redirect:/login/admin";
+        }
+    }
+
+    @GetMapping("/user")
+    public String userLogin(){
+        return "forward:/user_login.html";
+    }
+    @PostMapping("/user/check")
+    public String userLoginCheck(@RequestParam("account") String account,
+                                  @RequestParam("psw") String psw, HttpSession session){
+        if (loginService.userLoginCheck(account, psw, session)){
+            return "redirect:/home/user";
+        }else {
+            return "redirect:/login/user";
+        }
     }
 }

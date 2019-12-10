@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>SpringBoot模版渲染</title>
+    <title>购物车</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/store.css">
@@ -11,7 +11,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#" th:text="${account}"></a>
+    <a class="navbar-brand" href="#" th:text="${user_name}"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -24,6 +24,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/logout">logout</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/user/order">购买记录</a>
+            </li>
         </ul>
 
     </div>
@@ -31,8 +34,8 @@
 
 <div class="card">
     <div class="card-body">
-        <span>购物清单：</span>
-        <button type="button" class="btn btn-primary" style="float: right">立即购买</button>
+        <span id="total" th:text="购物车共有 + ${itemAmount} + 件商品"></span>
+        <button type="button" class="btn btn-primary" style="float: right" th:onclick="|buy()|">立即购买</button>
     </div>
 </div>
 
@@ -47,18 +50,18 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="item:${itemList}">
+    <tr th:each="item:${itemList}" th:id="${item.item_id}">
         <th th:text="${item.item_name}" scope="row"></th>
         <td th:text="${item.unit_price}"></td>
         <td>
             <form>
-                <div class="input-group mb-3 input-group-sm" style="width:6%" >
-                    <input type="text" class="form-control" placeholder="1">
+                <div class="input-group mb-3 input-group-sm" style="width:6%"  >
+                    <input name="num" type="text" class="form-control" value=1 onchange="changeValue(this)" >
                 </div>
             </form>
         </td>
         <td>
-            <button type="button" class="btn btn-primary" style="float: right">删除</button>
+            <button type="button" class="btn btn-primary" style="float: right" th:onclick="|deleteCart(${item.item_id})|">删除</button>
         </td>
         <td></td>
     </tr>
@@ -66,3 +69,29 @@
 </table>
 </body>
 </html>
+<script>
+    function deleteCart(itemID) {
+        $.get("/home/goods/deleteCart/" + itemID, function(data, status){
+            console.log(data)
+            alert("已经从购物车中移除")
+            $('#'+itemID).remove();
+        });
+    }
+    function changeValue(obj){
+        $(obj).attr("value",$(obj).val());
+    }
+    function buy() {
+        var Obj=document.getElementsByName("num");
+        var r = [];
+        for(let i=0; i<Obj.length; i++){
+            r.push(Obj[i].getAttribute('value'));
+        }
+        for (let i=0;i<r.length;i++){
+            console.log(r[i])
+        }
+        alert("购买成功");
+        $.get("/home/buy/"+ r, function () {
+            window.location.replace("http://localhost:8080/home/user");
+        })
+    }
+</script>
