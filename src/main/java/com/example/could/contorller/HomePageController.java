@@ -51,9 +51,14 @@ public class HomePageController {
         String name = session.getAttribute("user_name").toString();
         List<T_userOrder> itemList = goodsService.order((Integer)session.getAttribute("id"));
         int itemAmount = itemList.size();
+        int cost = 0;
+        for (T_userOrder order: itemList){
+            cost += order.getUnit_price() * order.getPurchase_volume();
+        }
         model.addAttribute("user_name", name);
         model.addAttribute("itemAmount", itemAmount);
         model.addAttribute("itemList", itemList);
+        model.addAttribute("cost", cost);
         return "user_order";
     }
 

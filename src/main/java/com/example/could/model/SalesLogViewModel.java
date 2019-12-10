@@ -16,6 +16,7 @@ public class SalesLogViewModel {
     Date purchase_time;
     Integer purchase_volume;
     Float unit_price;
+    Float cost_price;
     Float total_price;
 
 }

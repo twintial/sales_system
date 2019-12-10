@@ -33,7 +33,9 @@
         <div>
             <div class="card">
                 <div class="card-body">
-                    <span th:text="共有 + ${logAmount} + 条销售记录"></span>
+                    <span th:text="共有 + ${logAmount} + 条销售记录。 "></span>
+                    <span th:text="毛利润为 + ${gross} + 元。 "></span>
+                    <span th:text="净利润为 + ${net} + 元。 "></span>
                 </div>
             </div>
             <div class="container">

@@ -22,7 +22,7 @@ public class SalesLogService {
     public List<SalesLogViewModel> getSalesLog(Integer storeID){
         if (storeID != null){
             StringBuffer sql = new StringBuffer(
-                    "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
+                    "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, cost_price, purchase_volume*unit_price total_price " +
                     "from t_user natural join t_item natural join t_sales_log " +
                     "where store_id = ? order by purchase_time desc");
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
@@ -30,7 +30,7 @@ public class SalesLogService {
             return salesLogList;
         }else {
             StringBuffer sql = new StringBuffer(
-                    "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, purchase_volume*unit_price total_price " +
+                    "select item_name, real_name, age, purchase_time, purchase_volume, unit_price, cost_price, purchase_volume*unit_price total_price " +
                             "from t_user natural join t_item natural join t_sales_log order by purchase_time desc");
             List<SalesLogViewModel> salesLogList = hiveDruidTemplate.query(sql.toString(),
                     new BeanPropertyRowMapper<>(SalesLogViewModel.class));

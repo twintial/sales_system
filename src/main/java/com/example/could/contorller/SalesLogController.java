@@ -26,9 +26,17 @@ public class SalesLogController {
         String name = session.getAttribute("store_name").toString();
         List<SalesLogViewModel> salesLogs = salesLogService.getSalesLog(Integer.parseInt(session.getAttribute("id").toString()));
         int logAmount = salesLogs.size();
+        int gross = 0;
+        int net = 0;
+        for (SalesLogViewModel s: salesLogs){
+            gross += s.getTotal_price();
+            net +=s.getTotal_price() - s.getCost_price() * s.getPurchase_volume();
+        }
         model.addAttribute("store_name", name);
         model.addAttribute("logList", salesLogs);
         model.addAttribute("logAmount", logAmount);
+        model.addAttribute("gross", gross);
+        model.addAttribute("net", net);
         return "store_logpage";
     }
 

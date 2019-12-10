@@ -21,7 +21,12 @@ public class LoginService {
 
     public boolean storeLoginCheck(String account, String psw, HttpSession session){
         StringBuffer sql = new StringBuffer("select store_id, store_password, store_name from t_store where store_account = ?");
-        T_store store = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_store.class), account);
+        T_store store;
+        try {
+            store = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_store.class), account);
+        } catch (Exception e){
+            return false;
+        }
         if (store == null){
             return false;
         }
@@ -38,7 +43,12 @@ public class LoginService {
 
     public boolean adminLoginCheck(String account, String psw, HttpSession session){
         StringBuffer sql = new StringBuffer("select admin_password from t_admin where admin_account = ?");
-        T_admin admin = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_admin.class), account);
+        T_admin admin;
+        try {
+            admin = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_admin.class), account);
+        } catch (Exception e){
+            return false;
+        }
         if (admin == null){
             return false;
         }
@@ -52,7 +62,12 @@ public class LoginService {
 
     public boolean userLoginCheck(String account, String psw, HttpSession session){
         StringBuffer sql = new StringBuffer("select user_id, user_password, real_name from t_user where user_account = ?");
-        T_user user = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_user.class), account);
+        T_user user;
+        try {
+            user = hiveDruidTemplate.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(T_user.class), account);
+        } catch (Exception e){
+            return false;
+        }
         if (user == null){
             return false;
         }
