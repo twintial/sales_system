@@ -51,24 +51,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="item:${itemList}" th:id="${item.item_id}">
-                        <th th:text="${item.item_id}" scope="row"></th>
-                        <td th:text="${item.item_name}"></td>
-                        <td th:text="${item.sales}"></td>
-                        <td th:text="${item.cost_price}"></td>
-                        <td th:text="${item.unit_price}"></td>
-                        <td th:text="${item.stock}" th:id="'stock' + ${item.item_id}"></td>
-                        <td>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                操作
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" data-toggle="modal" data-target="#revise" th:data-stock="${item.stock}" th:data-id="${item.item_id}">更改库存</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" th:onclick="|deleteItem(${item.item_id})|" style="color: red">删除商品</a>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr th:each="item:${itemList}" th:id="${item.item_id}">
+                            <th th:text="${item.item_id}" scope="row"></th>
+                            <td th:text="${item.item_name}"></td>
+                            <td th:text="${item.sales}"></td>
+                            <td th:text="${item.cost_price}"></td>
+                            <td th:text="${item.unit_price}"></td>
+                            <td th:text="${item.stock}" th:id="'stock' + ${item.item_id}"></td>
+                            <td>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    操作
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#revise" th:data-stock="${item.stock}" th:data-id="${item.item_id}">更改库存</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" th:onclick="|deleteItem(${item.item_id})|" style="color: red">删除商品</a>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
