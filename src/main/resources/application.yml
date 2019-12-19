@@ -2,7 +2,7 @@ spring:
   thymeleaf:
     cache: false
 hive:
-  url: jdbc:hive2://106.13.95.102:10000/retail_system
+  url:
   driver-class-name: org.apache.hive.jdbc.HiveDriver
   type: com.alibaba.druid.pool.DruidDataSource
   user: root
